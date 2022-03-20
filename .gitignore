@@ -1,0 +1,7 @@
+node_modules/
+dist/
+src/generated/
+*.env*
+*.db
+.env
+yarn.lock
