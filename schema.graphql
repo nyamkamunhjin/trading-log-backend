@@ -7,20 +7,24 @@ type Mutation {
 }
 
 type Query {
+  userGetByEmail(data: UserGetInput!): User
   users: [User]
 }
 
 type User {
-  email: String
-  id: Int
-  initialBalance: Float
+  email: String!
+  initialBalance: Float!
   name: String
-  password: String
+  password: String!
 }
 
 input UserCreateInput {
   email: String!
-  initialBalance: Float
+  initialBalance: Float!
   name: String
   password: String!
+}
+
+input UserGetInput {
+  email: String!
 }

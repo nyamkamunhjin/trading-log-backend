@@ -1,12 +1,12 @@
 import { arg, extendType, inputObjectType, nonNull, objectType } from 'nexus';
-export const User = objectType({
+import { User } from 'nexus-prisma';
+export const UserObject = objectType({
   name: 'User',
   definition(t) {
-    t.int('id');
-    t.string('email');
-    t.string('password');
-    t.string('name');
-    t.float('initialBalance');
+    t.field(User.email);
+    t.field(User.password);
+    t.field(User.name);
+    t.field(User.initialBalance);
   },
 });
 
@@ -18,6 +18,28 @@ export const UserQuery = extendType({
       resolve: async (_parent, _args, context, info) => {
         const users = await context.prisma.user.findMany();
         return users;
+      },
+    });
+  },
+});
+
+export const UserGetQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('userGetByEmail', {
+      type: 'User',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'UserGetInput',
+          })
+        ),
+      },
+      resolve: async (_parent, _args, context, info) => {
+        const user = await context.prisma.user.findUnique({
+          where: _args.data,
+        });
+        return user;
       },
     });
   },
@@ -52,9 +74,16 @@ export const SignupUser = extendType({
 export const UserCreateInput = inputObjectType({
   name: 'UserCreateInput',
   definition(t) {
-    t.nonNull.string('email');
-    t.nonNull.string('password');
-    t.string('name');
-    t.float('initialBalance');
+    t.field(User.email);
+    t.field(User.password);
+    t.field(User.name);
+    t.field(User.initialBalance);
+  },
+});
+
+export const UserGetInput = inputObjectType({
+  name: 'UserGetInput',
+  definition(t) {
+    t.field(User.email);
   },
 });

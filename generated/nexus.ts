@@ -16,9 +16,12 @@ declare global {
 export interface NexusGenInputs {
   UserCreateInput: { // input type
     email: string; // String!
-    initialBalance?: number | null; // Float
+    initialBalance: number; // Float!
     name?: string | null; // String
     password: string; // String!
+  }
+  UserGetInput: { // input type
+    email: string; // String!
   }
 }
 
@@ -37,11 +40,10 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   User: { // root type
-    email?: string | null; // String
-    id?: number | null; // Int
-    initialBalance?: number | null; // Float
+    email: string; // String!
+    initialBalance: number; // Float!
     name?: string | null; // String
-    password?: string | null; // String
+    password: string; // String!
   }
 }
 
@@ -60,14 +62,14 @@ export interface NexusGenFieldTypes {
     signupUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
+    userGetByEmail: NexusGenRootTypes['User'] | null; // User
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   User: { // field return type
-    email: string | null; // String
-    id: number | null; // Int
-    initialBalance: number | null; // Float
+    email: string; // String!
+    initialBalance: number; // Float!
     name: string | null; // String
-    password: string | null; // String
+    password: string; // String!
   }
 }
 
@@ -76,11 +78,11 @@ export interface NexusGenFieldTypeNames {
     signupUser: 'User'
   }
   Query: { // field return type name
+    userGetByEmail: 'User'
     users: 'User'
   }
   User: { // field return type name
     email: 'String'
-    id: 'Int'
     initialBalance: 'Float'
     name: 'String'
     password: 'String'
@@ -91,6 +93,11 @@ export interface NexusGenArgTypes {
   Mutation: {
     signupUser: { // args
       data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
+    }
+  }
+  Query: {
+    userGetByEmail: { // args
+      data: NexusGenInputs['UserGetInput']; // UserGetInput!
     }
   }
 }
