@@ -7,7 +7,7 @@ type Mutation {
 }
 
 type Query {
-  userGetByEmail(data: UserGetInput!): User
+  getUserByUsername(data: UserGetInput!): User
   userLogin(data: UserLoginInput!): Token
   users: [User]
 }

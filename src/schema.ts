@@ -1,4 +1,4 @@
-import { makeSchema } from 'nexus';
+import { makeSchema, fieldAuthorizePlugin } from 'nexus';
 import { join } from 'path';
 import * as types from './graphql';
 export const schema = makeSchema({
@@ -11,6 +11,7 @@ export const schema = makeSchema({
     module: require.resolve('./context'),
     export: 'Context',
   },
+  plugins: [fieldAuthorizePlugin()],
   sourceTypes: {
     modules: [
       {

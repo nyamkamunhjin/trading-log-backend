@@ -30,6 +30,7 @@ export const TokenObject = objectType({
 });
 export const UserQuery = extendType({
   type: 'Query',
+
   definition(t) {
     t.list.field('users', {
       type: 'User',
@@ -44,8 +45,9 @@ export const UserQuery = extendType({
 export const UserGetQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.field('userGetByEmail', {
+    t.field('getUserByUsername', {
       type: 'User',
+
       args: {
         data: nonNull(
           arg({

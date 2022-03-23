@@ -5,6 +5,7 @@
 
 
 import type { Context } from "./../src/context"
+import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
 
@@ -69,7 +70,7 @@ export interface NexusGenFieldTypes {
     signupUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
-    userGetByEmail: NexusGenRootTypes['User'] | null; // User
+    getUserByUsername: NexusGenRootTypes['User'] | null; // User
     userLogin: NexusGenRootTypes['Token'] | null; // Token
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
@@ -89,7 +90,7 @@ export interface NexusGenFieldTypeNames {
     signupUser: 'User'
   }
   Query: { // field return type name
-    userGetByEmail: 'User'
+    getUserByUsername: 'User'
     userLogin: 'Token'
     users: 'User'
   }
@@ -111,7 +112,7 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    userGetByEmail: { // args
+    getUserByUsername: { // args
       data: NexusGenInputs['UserGetInput']; // UserGetInput!
     }
     userLogin: { // args
@@ -183,6 +184,15 @@ declare global {
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Authorization for an individual field. Returning "true"
+     * or "Promise<true>" means the field can be accessed.
+     * Returning "false" or "Promise<false>" will respond
+     * with a "Not Authorized" error for the field.
+     * Returning or throwing an error will also prevent the
+     * resolver from executing.
+     */
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }
