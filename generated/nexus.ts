@@ -15,13 +15,17 @@ declare global {
 
 export interface NexusGenInputs {
   UserCreateInput: { // input type
-    email: string; // String!
-    initialBalance: number; // Float!
+    initialBalance?: number | null; // Float
     name?: string | null; // String
     password: string; // String!
+    username: string; // String!
   }
   UserGetInput: { // input type
-    email: string; // String!
+    username: string; // String!
+  }
+  UserLoginInput: { // input type
+    password: string; // String!
+    username: string; // String!
   }
 }
 
@@ -39,11 +43,14 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Query: {};
+  Token: { // root type
+    token?: string | null; // String
+  }
   User: { // root type
-    email: string; // String!
-    initialBalance: number; // Float!
+    initialBalance?: number | null; // Float
     name?: string | null; // String
     password: string; // String!
+    username: string; // String!
   }
 }
 
@@ -63,13 +70,17 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     userGetByEmail: NexusGenRootTypes['User'] | null; // User
+    userLogin: NexusGenRootTypes['Token'] | null; // Token
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
+  Token: { // field return type
+    token: string | null; // String
+  }
   User: { // field return type
-    email: string; // String!
-    initialBalance: number; // Float!
+    initialBalance: number | null; // Float
     name: string | null; // String
     password: string; // String!
+    username: string; // String!
   }
 }
 
@@ -79,13 +90,17 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     userGetByEmail: 'User'
+    userLogin: 'Token'
     users: 'User'
   }
+  Token: { // field return type name
+    token: 'String'
+  }
   User: { // field return type name
-    email: 'String'
     initialBalance: 'Float'
     name: 'String'
     password: 'String'
+    username: 'String'
   }
 }
 
@@ -98,6 +113,9 @@ export interface NexusGenArgTypes {
   Query: {
     userGetByEmail: { // args
       data: NexusGenInputs['UserGetInput']; // UserGetInput!
+    }
+    userLogin: { // args
+      data: NexusGenInputs['UserLoginInput']; // UserLoginInput!
     }
   }
 }

@@ -8,23 +8,33 @@ type Mutation {
 
 type Query {
   userGetByEmail(data: UserGetInput!): User
+  userLogin(data: UserLoginInput!): Token
   users: [User]
 }
 
+type Token {
+  token: String
+}
+
 type User {
-  email: String!
-  initialBalance: Float!
+  initialBalance: Float
   name: String
   password: String!
+  username: String!
 }
 
 input UserCreateInput {
-  email: String!
-  initialBalance: Float!
+  initialBalance: Float
   name: String
   password: String!
+  username: String!
 }
 
 input UserGetInput {
-  email: String!
+  username: String!
+}
+
+input UserLoginInput {
+  password: String!
+  username: String!
 }

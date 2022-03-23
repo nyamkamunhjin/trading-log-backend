@@ -4,15 +4,14 @@ import fastify, {
   FastifyRequest,
   FastifyServerOptions,
 } from 'fastify';
-import { tracingIgnoreRoutes } from './constants';
 import mercurius from 'mercurius';
 import { schema } from './schema';
 import AltairFastify from 'altair-fastify-plugin';
 import shutdownPlugin from './plugins/shutdown';
-// import openTelemetryPlugin from '@autotelic/fastify-opentelemetry';
 import prismaPlugin from './plugins/prisma';
 import { Context } from './context';
 import statusPlugin from './plugins/status';
+import { GraphQLSchema } from 'graphql';
 
 export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
   const server = fastify(opts);
@@ -22,7 +21,7 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
   server.register(prismaPlugin);
 
   server.register(mercurius, {
-    schema,
+    schema: schema,
     path: '/graphql',
     graphiql: false,
     context: (request: FastifyRequest, reply: FastifyReply): Context => {
@@ -33,10 +32,11 @@ export function createServer(opts: FastifyServerOptions = {}): FastifyInstance {
       };
     },
   });
-  // 'endpointURL' should be the same as the mercurius 'path'
+
   server.register(AltairFastify, {
     path: '/altair',
     baseURL: '/altair/',
+    // 'endpointURL' should be the same as the mercurius 'path'
     endpointURL: '/graphql',
     initialSettings: {
       theme: 'dracula',
